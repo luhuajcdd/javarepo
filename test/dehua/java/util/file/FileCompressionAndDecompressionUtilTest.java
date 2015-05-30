@@ -26,6 +26,6 @@ public class FileCompressionAndDecompressionUtilTest extends TestCase {
 	
 	public void testDeCompressTGZFile() throws IOException{
 		setName(FileCompressionAndDecompressionUtil.class.getName());
-		new FileCompressionAndDecompressionUtil().deCompressTGZFile("D:\\a\\client_20150515.tar.gz");
+		new FileCompressionAndDecompressionUtil().deCompressTGZFile("/Users/dehua/Downloads/test/client_20150516.tar.gz");
 	}
 }  

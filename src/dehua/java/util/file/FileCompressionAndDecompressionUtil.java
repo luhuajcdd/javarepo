@@ -93,7 +93,7 @@ public class FileCompressionAndDecompressionUtil {
                 if (entry == null) {  
                     break;  
                 }  
-                if (entry.isDirectory()) {// 这里貌似不会运行到，跟ZipEntry有点不一样  
+                if (entry.isDirectory()) {  
                     new File(basePath + entry.getName()).mkdirs();  
                 } else {  
                     FileOutputStream os = null;  
@@ -112,7 +112,6 @@ public class FileCompressionAndDecompressionUtil {
                             os.write(bs, 0, len);  
                         }  
                         os.flush();
-                        return true;
                     }finally {  
                         os.close();  
                     }  
