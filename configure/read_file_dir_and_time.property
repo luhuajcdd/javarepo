@@ -1,0 +1,6 @@
+target_dir=D:/a,D:/a/1
+put_target_dir=D:/a/target_log/
+start_time=20150515,20150515
+end_time=20150526,20150526
+log_file_prefix=client_
+log_file_suffix=.tar.gz

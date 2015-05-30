@@ -1,0 +1,12 @@
+Cursor window allocation of 2048 kb failed
+java.lang.RuntimeException: Unable to create service com.baidu.android.pushservice.PushService
+java.util.concurrent.TimeoutException: com.android.internal.os.BinderInternal$GcWatcher.finalize()
+java.lang.RuntimeException: Unable to instantiate service com.baidu.android.pushservice.PushService: java.lang.ClassNotFoundException
+java.util.concurrent.TimeoutException: libcore.icu.NativeDecimalFormat.finalize()
+java.util.concurrent.TimeoutException: java.util.concurrent.ScheduledThreadPoolExecutor.finalize()
+com.android.internal.util.FastXmlSerializer
+java.lang.IllegalStateException: Broadcast already finished
+android.app.RemoteServiceException: Bad notification posted from package com.sangfor.pocket:
+java.lang.IllegalStateException: The content of the adapter has changed but ListView did not receive a notification. Make sure the content of your adapter is not modified from a background thread, but only from the UI thread. Make sure your adapter calls notifyDataSetChanged() when its content changes. [in ListView(16908298, class com.sangfor.pocket.ui.widget.CusListView) with Adapter(class android.widget.HeaderViewListAdapter); context = class com.sangfor.pocket.uin.chooser.CommonChooseActivity]
+java.lang.IllegalStateException: The content of the adapter has changed but ListView did not receive a notification. Make sure the content of your adapter is not modified from a background thread, but only from the UI thread. Make sure your adapter calls notifyDataSetChanged() when its content changes. [in ListView(16908298, class com.sangfor.pocket.ui.widget.CusListView) with Adapter(class android.widget.HeaderViewListAdapter); context = class com.sangfor.pocket.uin.workflow.apply.ApplyChooseApprovalerActivity]
+java.lang.IllegalStateException: The content of the adapter has changed but ListView did not receive a notification. Make sure the content of your adapter is not modified from a background thread, but only from the UI thread. Make sure your adapter calls notifyDataSetChanged() when its content changes. [in ListView(16908298, class com.sangfor.pocket.ui.widget.CusListView) with Adapter(class android.widget.HeaderViewListAdapter); context = class com.sangfor.pocket.ui.SearchActivity]
