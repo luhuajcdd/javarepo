@@ -9,7 +9,12 @@ public class SystemCommand {
 
 	//window copy D:\a\a.txt D:\b
 	public static boolean copy(String source, String destination){
-		return excute(String.format("copy %s %s", source, destination));
+		return excute(String.format("cmd /c copy %s %s", source, destination));
+	}
+	
+	//window : del -r sssdd
+	public static boolean delDir(String dir){
+		return excute(String.format("cmd /c del -r %s", dir));
 	}
 	
 	public static boolean excute(String cmd){

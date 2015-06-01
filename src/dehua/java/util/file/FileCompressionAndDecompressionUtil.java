@@ -91,7 +91,7 @@ public class FileCompressionAndDecompressionUtil {
             while (true) {  
                 TarArchiveEntry entry = is.getNextTarEntry();  
                 if (entry == null) {  
-                    break;  
+                    return true;  
                 }  
                 if (entry.isDirectory()) {  
                     new File(basePath + entry.getName()).mkdirs();  
@@ -113,7 +113,9 @@ public class FileCompressionAndDecompressionUtil {
                         }  
                         os.flush();
                     }finally {  
-                        os.close();  
+                    	if(os != null){
+                    		os.close();  
+                    	}
                     }  
                 }  
             }  
@@ -124,7 +126,6 @@ public class FileCompressionAndDecompressionUtil {
             } catch (IOException e) {  
                 e.printStackTrace();  
             }  
-        }  
-        return false;
+        }
     }  
 }  

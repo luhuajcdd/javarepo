@@ -1,7 +1,9 @@
 package dehua.java.fliter.log;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.List;
 
@@ -95,6 +97,8 @@ public class FilterDifferentLogFile {
 						return ;
 					}
 					
+					//3. 如果是压缩文件， 先解压
+					//4. 读取解压之后的文件， 循环到子目录
 					boolean result = new FileCompressionAndDecompressionUtil().deCompressTGZFile(f.getAbsolutePath());
 					if(! result){
 						return ;
@@ -102,11 +106,13 @@ public class FilterDifferentLogFile {
 					
 					String parentPath = f.getParent();
 					String subFileName = fileName.replace(logConfigure.logSuffix, "");
-					File deCompressFile = new File(parentPath + File.pathSeparator + subFileName);
+					File deCompressFile = new File(parentPath + File.separator + subFileName);
 					boolean filterResult = filter(predefinedStrs, deCompressFile, destinationDir);
 					if(filterResult){
 						//删除解压后的文件
-						deCompressFile.deleteOnExit();
+						//deCompressFile.delete();//不能删除文件夹
+						//deCompressFile.deleteOnExit();//不能删除文件夹
+						FileUtil.del(deCompressFile);
 					}
 				}
 			}
@@ -115,8 +121,10 @@ public class FilterDifferentLogFile {
 		// 6. 更新预定的字符文件
 		StringBuilder strBuilder = new StringBuilder();
 		for(String str : predefinedStrs){
-			strBuilder.append(str).append("\\r\\n");
+			strBuilder.append(str).append((char)10);
 		}
+		updateFilterStr(strBuilder.toString());
+		
 		
 	}
 
@@ -163,8 +171,13 @@ public class FilterDifferentLogFile {
 				"/configure/Predefined_crash_str.configure"));
 	}
 	
+	private void updateFilterStr(String filterStr){
+		FileUtil.saveStringToTargetFile(filterStr, new File(new DirUtil().getCurrentProjectPath() + 
+				"/configure/Predefined_crash_str.configure"));
+	}
+	
 
-	private boolean filter(List<String> predefinedStrs, File deCompressFile, File destinationDir) {
+	private boolean filter(List<String> predefinedStrs, File deCompressFile, File destinationDir) throws IOException {
 		 
 		if(deCompressFile.isDirectory()){
 			//4. 读取解压之后的文件， 循环到子目录
@@ -176,6 +189,14 @@ public class FilterDifferentLogFile {
 				if(f == null){
 					continue;
 				}
+				if(! f.getName().contains("Android")){
+					continue;
+				}
+				
+				if(! f.getName().contains(".txt")){
+					continue;
+				}
+				
 				boolean result = FileUtil.isFileContainStr(f, predefinedStrs);
 				if(! result){//不包含指定的字符
 					// 5. 读取的文件是否包含已经定义的文件， N: 把文件copy到制定目录(target_log), 同时把特殊标识字符放入预定义的字符串中
@@ -209,32 +230,62 @@ public class FilterDifferentLogFile {
 	 * @param f
 	 * @param predefinedStrs
 	 * @return
+	 * @throws IOException 
 	 */
-	private boolean putToPredefinedStr(File f, List<String> predefinedStrs) {
+	private boolean putToPredefinedStr(File f, List<String> predefinedStrs) throws IOException {
 		byte[] b = FileUtil.readFile(f);
 		String fileData = new String(b);
 		if(fileData.contains(Caused_by)){
 			String subData = fileData.substring(fileData.indexOf(Caused_by));
 			if(subData.contains(com_sangfor_pocket)){
 				String subStr = subData.substring(subData.indexOf(com_sangfor_pocket));
-				predefinedStrs.add(subStr.substring(0, subStr.indexOf("\\r\\n")));
+				int pos = getStringFirstLineEndPosition(subStr);
+				if(pos > 0){
+					predefinedStrs.add(subStr.substring(0, pos));
+				}
 				return true;
 			}else{
 				String subStr = fileData.substring(fileData.indexOf(Caused_by));
-				predefinedStrs.add(subStr.substring(0, subStr.indexOf("\\r\\n")));
+				int pos = getStringFirstLineEndPosition(subStr);
+				if(pos > 0){
+					String subSubStr = subStr.substring(0, pos);
+					if(subSubStr.contains(com_sangfor_pocket)){
+						predefinedStrs.add(subStr.substring(0, pos));
+					}
+				}
 				return true;
 			}
 		}else{
 			if(fileData.contains(com_sangfor_pocket)){
 				String subStr = fileData.substring(fileData.indexOf(com_sangfor_pocket));
-				predefinedStrs.add(subStr.substring(0, subStr.indexOf("\\r\\n")));
+				int pos = getStringFirstLineEndPosition(subStr);
+				if(pos > 0){
+					predefinedStrs.add(subStr.substring(0, pos));
+				}
 				return true;
 			}else{
 				String subStr = fileData.substring(fileData.indexOf(java_lang));
-				predefinedStrs.add(subStr.substring(0, subStr.indexOf("\\r\\n")));
+				int pos = getStringFirstLineEndPosition(subStr);
+				if(pos > 0){
+					predefinedStrs.add(subStr.substring(0, pos));
+				}
 				return true;
 			}
 		}
+	}
+
+	private int getStringFirstLineEndPosition(String subStr)
+			throws IOException {
+		InputStream is = new ByteArrayInputStream(subStr.getBytes());
+		int pos = 0;
+		int i ;
+		while((i = is.read()) != -1){
+			pos ++ ;
+			if(i == 10){//换行
+				return pos;
+			}
+		}
+		return 0;
 	}
 
 

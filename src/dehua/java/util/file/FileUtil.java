@@ -265,14 +265,14 @@ public class FileUtil {
 		}
 		return false;
 	}
-	
+
 	public static boolean isFileContainStr(File file, List<String> strs) {
 		if (file == null || strs == null) {
 			return false;
 		}
-		
+
 		byte[] b = readFile(file);
-		
+
 		String fileData = new String(b);
 		for (String str : strs) {
 			if (str == null) {
@@ -285,4 +285,31 @@ public class FileUtil {
 		return false;
 	}
 
+	/**
+	 * 删除文件目录
+	 * @param filepath
+	 * @throws IOException
+	 */
+	public static void del(String filepath) throws IOException {
+		File f = new File(filepath);// 定义文件路径
+		del(f);
+	}
+
+	public static void del(File f) throws IOException {
+		if (f.exists() && f.isDirectory()) {// 判断是文件还是目录
+			if (f.listFiles().length == 0) {// 若目录下没有文件则直接删除
+				f.delete();
+			} else {// 若有则把文件放进数组，并判断是否有下级目录
+				File delFile[] = f.listFiles();
+				int i = f.listFiles().length;
+				for (int j = 0; j < i; j++) {
+					if (delFile[j].isDirectory()) {
+						del(delFile[j].getAbsolutePath());// 递归调用del方法并取得子目录路径
+					}
+					delFile[j].delete();// 删除文件
+				}
+				f.delete();
+			}
+		}
+	}
 }
