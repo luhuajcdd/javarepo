@@ -1,12 +1,33 @@
 Cursor window allocation of 2048 kb failed
+java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState
 java.lang.RuntimeException: Unable to create service com.baidu.android.pushservice.PushService
+java.util.concurrent.TimeoutException: android.os.BinderProxy.finalize()
+java.util.concurrent.TimeoutException: java.io.FileInputStream.finalize()
 java.util.concurrent.TimeoutException: com.android.internal.os.BinderInternal$GcWatcher.finalize()
 java.lang.RuntimeException: Unable to instantiate service com.baidu.android.pushservice.PushService: java.lang.ClassNotFoundException
 java.util.concurrent.TimeoutException: libcore.icu.NativeDecimalFormat.finalize()
 java.util.concurrent.TimeoutException: java.util.concurrent.ScheduledThreadPoolExecutor.finalize()
+Caused by: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean com.j256.ormlite.stmt.StatementBuilder$StatementType.isOkForStatementBuilder()' on a null object reference
 com.android.internal.util.FastXmlSerializer
 java.lang.IllegalStateException: Broadcast already finished
 android.app.RemoteServiceException: Bad notification posted from package com.sangfor.pocket:
 java.lang.IllegalStateException: The content of the adapter has changed but ListView did not receive a notification. Make sure the content of your adapter is not modified from a background thread, but only from the UI thread. Make sure your adapter calls notifyDataSetChanged() when its content changes. [in ListView(16908298, class com.sangfor.pocket.ui.widget.CusListView) with Adapter(class android.widget.HeaderViewListAdapter); context = class com.sangfor.pocket.uin.chooser.CommonChooseActivity]
 java.lang.IllegalStateException: The content of the adapter has changed but ListView did not receive a notification. Make sure the content of your adapter is not modified from a background thread, but only from the UI thread. Make sure your adapter calls notifyDataSetChanged() when its content changes. [in ListView(16908298, class com.sangfor.pocket.ui.widget.CusListView) with Adapter(class android.widget.HeaderViewListAdapter); context = class com.sangfor.pocket.uin.workflow.apply.ApplyChooseApprovalerActivity]
 java.lang.IllegalStateException: The content of the adapter has changed but ListView did not receive a notification. Make sure the content of your adapter is not modified from a background thread, but only from the UI thread. Make sure your adapter calls notifyDataSetChanged() when its content changes. [in ListView(16908298, class com.sangfor.pocket.ui.widget.CusListView) with Adapter(class android.widget.HeaderViewListAdapter); context = class com.sangfor.pocket.ui.SearchActivity]
+com.sangfor.pocket.uin.legwork.LegWrkMainListActivity.showNullDialog(LegWrkMainListActivity.java:292)
+com.sangfor.pocket.lockpush.LockPushManager.startPush(LockPushManager.java:99)
+com.sangfor.pocket.appservice.AutoSignInService.c(AutoSignInService.java:438)
+com.sangfor.pocket.ui.workattendance.ValidCacheSignReq.getValidReq(ValidCacheSignReq.java:76)
+com.sangfor.pocket.lockpush.LockPushManager.registerPush(LockPushManager.java:241)
+java.lang.OutOfMemoryError: pthread_create (stack size 16384 bytes) failed: Try again
+com.sangfor.pocket.uin.notepad.PhotoPickerActivity.l(PhotoPickerActivity.java:690)
+java.lang.Daemons$FinalizerDaemon.doFinalize(Daemons.java:187)
+com.sangfor.pocket.utils.dns.DnsCacheManagement.getIpAfterPaser(DnsCacheManagement.java:397)
+com.sangfor.pocket.utils.InetAddressUtils.isIPv4Address(InetAddressUtils.java:28)
+com.sangfor.pocket.uin.common.ContactListActivity$ContactLoader.loadInBackground(ContactListActivity.java:435)
+com.sangfor.pocket.uin.common.ContactListActivity$ContactLoader.loadInBackground(ContactListActivity.java:498)
+com.sangfor.pocket.appservice.AppServiceManager.isRunning(AppServiceManager.java:296)
+com.sangfor.pocket.model.dao.ContactDaoImpl.queryContacts(ContactDaoImpl.java:392)
+com.sangfor.pocket.utils.uid.UIDUtils.b(UIDUtils.java:43)
+com.sangfor.pocket.model.net.connect.AutoConnect$2.run(AutoConnect.java:75)
+
