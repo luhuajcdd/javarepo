@@ -90,7 +90,7 @@ public class FilterDifferentLogFile {
 						long logTime = TimeUtil.parseTime(time, TimePattern.pattern2);
 						if(logTime < startTime || logTime > endTime){
 							System.out.println("current time = " + time + "; not in defined time");
-							return ;
+							continue ;
 						}
 					} catch (ParseException e) {
 						e.printStackTrace();
@@ -109,19 +109,28 @@ public class FilterDifferentLogFile {
 					File deCompressFile = new File(parentPath + File.separator + subFileName);
 					boolean filterResult = filter(predefinedStrs, deCompressFile, destinationDir);
 					if(filterResult){
-						//删除解压后的文件
-						//deCompressFile.delete();//不能删除文件夹
-						//deCompressFile.deleteOnExit();//不能删除文件夹
-						FileUtil.del(deCompressFile);
+						System.out.println("end success");
 					}
+					
+					//删除解压后的文件
+					//deCompressFile.delete();//不能删除文件夹
+					//deCompressFile.deleteOnExit();//不能删除文件夹
+					FileUtil.del(deCompressFile);
+					
 				}
 			}
 		}
 		
 		// 6. 更新预定的字符文件
 		StringBuilder strBuilder = new StringBuilder();
-		for(String str : predefinedStrs){
-			strBuilder.append(str).append((char)10);
+		int size = predefinedStrs.size();
+		for(int i = 0 ; i < size; i ++){
+			String str = predefinedStrs.get(i);
+			if(i == size - 1){
+				strBuilder.append(str);
+			}else{
+				strBuilder.append(str).append("\r\n");
+			}
 		}
 		updateFilterStr(strBuilder.toString());
 		
@@ -185,6 +194,8 @@ public class FilterDifferentLogFile {
 			if(files == null){
 				return true;
 			}
+			System.out.println("files count = "+files.length);
+			int i = 0;
 			for(File f : files){
 				if(f == null){
 					continue;
@@ -198,6 +209,7 @@ public class FilterDifferentLogFile {
 				}
 				
 				boolean result = FileUtil.isFileContainStr(f, predefinedStrs);
+				System.out.println("i = " + i ++  + "; file name = " + f.getAbsolutePath());
 				if(! result){//不包含指定的字符
 					// 5. 读取的文件是否包含已经定义的文件， N: 把文件copy到制定目录(target_log), 同时把特殊标识字符放入预定义的字符串中
 					boolean copyResult = copyFileToDestinationDir(f, destinationDir);
@@ -210,13 +222,13 @@ public class FilterDifferentLogFile {
 					}
 					
 					if(copyResult && putResult){
-						return true;
+						continue;
 					}
 				}
 			}
 		}
 		
-		return false;
+		return true;
 		
 	}
 
@@ -241,37 +253,44 @@ public class FilterDifferentLogFile {
 				String subStr = subData.substring(subData.indexOf(com_sangfor_pocket));
 				int pos = getStringFirstLineEndPosition(subStr);
 				if(pos > 0){
-					predefinedStrs.add(subStr.substring(0, pos));
+					predefinedStrs.add(subStr.substring(0, pos-1));
 				}
 				return true;
 			}else{
-				String subStr = fileData.substring(fileData.indexOf(Caused_by));
-				int pos = getStringFirstLineEndPosition(subStr);
-				if(pos > 0){
-					String subSubStr = subStr.substring(0, pos);
-					if(subSubStr.contains(com_sangfor_pocket)){
-						predefinedStrs.add(subStr.substring(0, pos));
+				int index = fileData.indexOf(Caused_by) ;
+				if(index != -1){
+					String subStr = fileData.substring(index);
+					int pos = getStringFirstLineEndPosition(subStr);
+					if(pos > 0){
+						String subSubStr = subStr.substring(0, pos);
+						if(subSubStr.contains(com_sangfor_pocket)){
+							predefinedStrs.add(subStr.substring(0, pos-1));
+						}
 					}
+					return true;
 				}
-				return true;
 			}
 		}else{
 			if(fileData.contains(com_sangfor_pocket)){
 				String subStr = fileData.substring(fileData.indexOf(com_sangfor_pocket));
 				int pos = getStringFirstLineEndPosition(subStr);
 				if(pos > 0){
-					predefinedStrs.add(subStr.substring(0, pos));
+					predefinedStrs.add(subStr.substring(0, pos-1));
 				}
 				return true;
 			}else{
-				String subStr = fileData.substring(fileData.indexOf(java_lang));
-				int pos = getStringFirstLineEndPosition(subStr);
-				if(pos > 0){
-					predefinedStrs.add(subStr.substring(0, pos));
+				int index = fileData.indexOf(java_lang);
+				if(index != -1){
+					String subStr = fileData.substring(index);
+					int pos = getStringFirstLineEndPosition(subStr);
+					if(pos > 0){
+						predefinedStrs.add(subStr.substring(0, pos-1));
+					}
+					return true;
 				}
-				return true;
 			}
 		}
+		return false;
 	}
 
 	private int getStringFirstLineEndPosition(String subStr)
@@ -288,6 +307,8 @@ public class FilterDifferentLogFile {
 		return 0;
 	}
 
-
+public static void main(String[] args) {
+	System.out.println((char)10);
+}
 	
 }
