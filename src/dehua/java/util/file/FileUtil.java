@@ -274,6 +274,7 @@ public class FileUtil {
 		byte[] b = readFile(file);
 
 		String fileData = new String(b);
+		//System.out.println("file data = " + fileData);
 		for (String str : strs) {
 			if (str == null) {
 				continue;
