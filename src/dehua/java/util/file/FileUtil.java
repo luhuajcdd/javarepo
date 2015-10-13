@@ -3,15 +3,17 @@ package dehua.java.util.file;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,10 +184,10 @@ public class FileUtil {
 	 * @param newPath
 	 */
 	public static List<String> readFileEachLine(File file) {
-		FileReader reader = null;
+		InputStreamReader reader = null;
 		BufferedReader br = null;
 		try {
-			reader = new FileReader(file);
+			reader = new InputStreamReader(new FileInputStream(file),"gbk");
 			br = new BufferedReader(reader);
 			List<String> contents = new ArrayList<String>();
 			String tempString = null;
@@ -209,6 +211,35 @@ public class FileUtil {
 			}
 		}
 		return null;
+	}
+	
+	public static void writeStringsInFile(List<String> contents, File file, boolean append){
+		OutputStreamWriter writer = null;
+		BufferedWriter bw = null;
+		try{
+			writer = new OutputStreamWriter(new FileOutputStream(file,append), "gbk");
+			bw = new BufferedWriter(writer);
+			for(String content : contents){
+				if(content == null) continue;
+				bw.write(content);
+				bw.newLine();
+			}
+			bw.flush();
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null) {
+					bw.close();
+				}
+				if (writer != null) {
+					writer.close();
+				}
+			} catch (IOException e) {
+			}
+		}
 	}
 
 	public static void copyFile(String oldPath, String newPath) {
