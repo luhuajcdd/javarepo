@@ -1,6 +1,7 @@
 package dehua.java.encrypt;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,6 +17,8 @@ import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+
+import dehua.java.util.file.FileUtil;
 
 /***
  * Des文件加密解密
@@ -179,9 +182,14 @@ public class DesFileEncrypt {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		DesFileEncrypt desFileEncrypt = new DesFileEncrypt();
-		desFileEncrypt.decrypt(outFilePath[0]);  //解密第一个文件平且测试解密后的结果
+		//DesFileEncrypt desFileEncrypt = new DesFileEncrypt();
+		//desFileEncrypt.decrypt(outFilePath[0]);  //解密第一个文件平且测试解密后的结果
+		File file = new File("C:/Users/ZOZT/Desktop/change.bin");
+		FileUtil.saveByteToTargetFile("god god dog dog".getBytes(), file);
+		
 	}
+	
+	
 }
 
 

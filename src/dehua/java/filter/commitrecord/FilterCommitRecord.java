@@ -51,11 +51,11 @@ public class FilterCommitRecord {
 		
 		//3. 根据规则生成分类文件
 		deleteRepeatContent(needTest);
-		File fNeedTest = new File("./needtest.txt");
+		File fNeedTest = new File("F:\\tools\\getSVNLog\\needtest.txt");
 		FileUtil.writeStringsInFile(needTest, fNeedTest, false);
 		
 		deleteRepeatContent(developerTest);
-		File fDevTest = new File("./devtest.txt");
+		File fDevTest = new File("F:\\tools\\getSVNLog\\devtest.txt");
 		FileUtil.writeStringsInFile(developerTest, fDevTest, false);
 		
 	}
@@ -88,8 +88,6 @@ public class FilterCommitRecord {
 		FilterCommitRecord fcr = new FilterCommitRecord();
 		fcr.filter("F:\\tools\\getSVNLog\\luhua.txt", fcr.filterRules1);
 		System.out.println("end");
-		
-		
 	}
 	
 }
