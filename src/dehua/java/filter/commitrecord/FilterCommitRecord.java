@@ -31,12 +31,42 @@ public class FilterCommitRecord {
 			return;
 		}
 		
+		List<String> filterStrs = getFilterString();
+		List<String> filterSaveSubmitLogs = getFilterString2();
+		
 		//2. 读取记录中每一行
 		ArrayList<String> needTest = new ArrayList<>();
 		ArrayList<String> developerTest = new ArrayList<>();
 		
 		for(String str : fileContents){
 			if(str == null || "".equals(str)) continue;
+						
+			//检查过滤字符
+			boolean willContinue = true;
+			if(filterStrs != null){
+				for(String filterStr : filterStrs){
+					if(filterStr == null || "".equals(filterStr))continue;
+					if(str.contains(filterStr)){
+						willContinue = false;
+					}
+				}
+			}
+			if(!willContinue) continue;
+			
+			//保留包含制定字符的记录
+			boolean willContinue2 = false;
+			if(filterSaveSubmitLogs != null){
+				for(String filter : filterSaveSubmitLogs){
+					if(filter == null || "".equals(filter))continue;
+					if(str.contains(filter)){
+						willContinue2 = true;
+						break;
+					}
+				}
+				if(!willContinue2) continue;
+			}
+			
+			
 			boolean isNeedTest = false;
 			for(String rule : filterRules){
 				if(str.contains(rule)){
@@ -58,6 +88,28 @@ public class FilterCommitRecord {
 		File fDevTest = new File("F:\\tools\\getSVNLog\\devtest.txt");
 		FileUtil.writeStringsInFile(developerTest, fDevTest, false);
 		
+	}
+	
+	/**
+	 * 需要过滤的提交记录(beta版提交记录) 需要删除的日志记录
+	 * @return
+	 */
+	private List<String> getFilterString() {
+		List<String> filterString = new ArrayList<String>();
+		filterString.add("2.3");
+		return filterString;
+		//return null;
+	}
+
+	/**
+	 * 需要保留的提交记录(正式版提交记录) 需要保留的日志
+	 * @return
+	 */
+	private List<String> getFilterString2(){
+		List<String> filterString = new ArrayList<String>();
+		filterString.add("合入1.6.0正式包");
+		//return filterString;
+		return null;
 	}
 	
 	public void deleteRepeatContent(List<String> fileContents ){

@@ -5,11 +5,13 @@ public class Test {
      * @param args 
      */  
     public static void main(String args[]) throws Exception {  
-          test1();
+          //test1();
           System.out.println("------------------------------------------------------");
-          test2();
+          //test2();
+          System.out
+				.println(FileTypeJudge.getType("E:\\a"));;
           String formatType = "image/*";
-          System.out.println(formatType.substring(0,formatType.indexOf('/')));
+          //System.out.println(formatType.substring(0,formatType.indexOf('/')));
     }  
     
     static void test1() throws Exception {
