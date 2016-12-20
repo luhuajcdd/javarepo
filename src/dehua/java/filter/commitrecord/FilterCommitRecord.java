@@ -17,6 +17,11 @@ import dehua.java.util.file.FileUtil;
 public class FilterCommitRecord {
 
 	private String[] filterRules1 = new String[]{"功能","需要测试"};
+	private static ArrayList<String> filterInDeveloperTests = new ArrayList<String>();
+	static{
+		filterInDeveloperTests.add("不需要测试");
+	}
+	
 	
 	public void filter(String filepath, String[] filterRules){
 		File file = new File(filepath);
@@ -65,17 +70,24 @@ public class FilterCommitRecord {
 				}
 				if(!willContinue2) continue;
 			}
-			
-			
-			boolean isNeedTest = false;
-			for(String rule : filterRules){
-				if(str.contains(rule)){
-					needTest.add(str);
-					isNeedTest = true;
+			boolean isNotExcuteNeedTest = false;
+			for(String inDeveloperRule : filterInDeveloperTests){
+				if(str.contains(inDeveloperRule)){
+					isNotExcuteNeedTest = true;
 					break;
 				}
 			}
-			if(isNeedTest) continue;
+			if(! isNotExcuteNeedTest){
+				boolean isNeedTest = false;
+				for(String rule : filterRules){
+					if(str.contains(rule)){
+						needTest.add(str);
+						isNeedTest = true;
+						break;
+					}
+				}
+				if(isNeedTest) continue;
+			}
 			developerTest.add(str);
 		}
 		
@@ -91,13 +103,14 @@ public class FilterCommitRecord {
 	}
 	
 	/**
-	 * 需要过滤的提交记录(beta版提交记录) 需要删除的日志记录
+	 * 需要删除的日志记录
 	 * @return
 	 */
 	private List<String> getFilterString() {
 		List<String> filterString = new ArrayList<String>();
-		filterString.add("2.3");
+		filterString.add("2.5.2");
 		return filterString;
+		
 		//return null;
 	}
 
@@ -107,7 +120,8 @@ public class FilterCommitRecord {
 	 */
 	private List<String> getFilterString2(){
 		List<String> filterString = new ArrayList<String>();
-		filterString.add("合入1.6.0正式包");
+		//filterString.add("2.4.0");
+		//filterString.add("2.4.1");
 		//return filterString;
 		return null;
 	}
@@ -141,5 +155,4 @@ public class FilterCommitRecord {
 		fcr.filter("F:\\tools\\getSVNLog\\luhua.txt", fcr.filterRules1);
 		System.out.println("end");
 	}
-	
 }

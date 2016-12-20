@@ -5,8 +5,8 @@ import dehua.java.util.time.TimeUtil.TimePattern;
 public class TimeUtilTest {
 
 	public static void main(String[] args) {
-		long t = 1464570185150L;
-		System.out.println(TimeUtil.parseTime(t, TimePattern.millsSecondPattern));;
+		long t = 1466154372681L;
+		System.out.println(TimeUtil.parseTime(t, TimePattern.pattern6));;
 	}
 	
 }

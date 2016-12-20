@@ -1,4 +1,4 @@
-package dehua.java.filter.dexmaindexclasslist;
+package dehua.java.filter.filesdiff;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,17 +6,17 @@ import java.util.List;
 
 import dehua.java.util.file.FileUtil;
 
-public class DiffTwoVersionApkMainDexClassList {
+public class FilesDiff {
 	
 	public static void main(String[] args) {
-		DiffTwoVersionApkMainDexClassList instance = new DiffTwoVersionApkMainDexClassList();
+		FilesDiff instance = new FilesDiff();
 		instance.inNewNotInOld();
 		instance.inOldNotInNew();
 	}
 
 	//F:\tools\maindex
 	public void inOldNotInNew(){
-		DiffTwoVersionApkMainDexClassList instance = new DiffTwoVersionApkMainDexClassList();
+		FilesDiff instance = new FilesDiff();
 		List<String> oldContents = instance.getFileLineContent("F:\\tools\\maindex\\oldversion.txt");
 		List<String> newContents = instance.getFileLineContent("F:\\tools\\maindex\\newversion.txt");
 		
@@ -41,7 +41,7 @@ public class DiffTwoVersionApkMainDexClassList {
 	}
 	
 	public void inNewNotInOld(){
-		DiffTwoVersionApkMainDexClassList instance = new DiffTwoVersionApkMainDexClassList();
+		FilesDiff instance = new FilesDiff();
 		List<String> oldContents = instance.getFileLineContent("F:\\tools\\maindex\\oldversion.txt");
 		List<String> newContents = instance.getFileLineContent("F:\\tools\\maindex\\newversion.txt");
 		
