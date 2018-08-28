@@ -48,7 +48,7 @@ public class FilterCommitRecord {
 						
 			//检查过滤字符
 			boolean willContinue = true;
-			if(filterStrs != null){
+			if(filterStrs != null && filterStrs.size() > 0){
 				for(String filterStr : filterStrs){
 					if(filterStr == null || "".equals(filterStr))continue;
 					if(str.contains(filterStr)){
@@ -60,7 +60,7 @@ public class FilterCommitRecord {
 			
 			//保留包含制定字符的记录
 			boolean willContinue2 = false;
-			if(filterSaveSubmitLogs != null){
+			if(filterSaveSubmitLogs != null && filterSaveSubmitLogs.size() > 0){
 				for(String filter : filterSaveSubmitLogs){
 					if(filter == null || "".equals(filter))continue;
 					if(str.contains(filter)){
@@ -81,6 +81,9 @@ public class FilterCommitRecord {
 				boolean isNeedTest = false;
 				for(String rule : filterRules){
 					if(str.contains(rule)){
+						if(isNeedTestHasStr(needTest,str)){
+							continue;
+						}
 						needTest.add(str);
 						isNeedTest = true;
 						break;
@@ -98,19 +101,76 @@ public class FilterCommitRecord {
 		
 		deleteRepeatContent(developerTest);
 		File fDevTest = new File("F:\\tools\\getSVNLog\\devtest.txt");
-		FileUtil.writeStringsInFile(developerTest, fDevTest, false);
+		FileUtil.writeStringsInFile(needTest, fDevTest, false);
+		FileUtil.writeStringsInFile(developerTest, fDevTest, true);
 		
 	}
 	
+	private boolean isNeedTestHasStr(ArrayList<String> needTests, String str) {
+		
+		int index; 
+		index = str.indexOf("#");
+		if(index > -1){
+			index += 1;
+		}else{
+			index = str.indexOf("功能");
+			if(index == -1){
+				return false;
+			}
+			index += 2;
+		}
+		String subStr = str.substring(index, str.length()).trim();
+		index = getIndex(subStr);
+		if(index == -1){
+			return false;
+		}
+		String key = subStr.substring(0, index);
+		if(key.contains("】")){
+			key = key.substring(0, key.indexOf("】"));
+		}
+		
+		System.out.println("再次去重的 key = " + key);
+		
+		for(String needTestStr : needTests){
+			if(needTestStr.contains(key)){
+				return true;
+			}
+		}
+		
+		return false;
+	
+	}
+
+	public int getIndex(String subStr) {
+		int index;
+		index = subStr.indexOf(" ");
+		if(index == -1){
+			index = subStr.indexOf("】");
+			if(index == -1){
+				index = subStr.indexOf("}");
+				if(index != -1){
+					index += 1;
+				}
+			}else{
+				index += 1;
+			}
+		}else{
+			index += 1;
+		}
+		return index;
+	}
+
 	/**
 	 * 需要删除的日志记录
 	 * @return
 	 */
 	private List<String> getFilterString() {
 		List<String> filterString = new ArrayList<String>();
-		filterString.add("2.5.2");
+		filterString.add("5.0");
+		/*filterString.add("4.2");
+		filterString.add("4.1");
+		filterString.add("4.0");*/
 		return filterString;
-		
 		//return null;
 	}
 
@@ -120,8 +180,7 @@ public class FilterCommitRecord {
 	 */
 	private List<String> getFilterString2(){
 		List<String> filterString = new ArrayList<String>();
-		//filterString.add("2.4.0");
-		//filterString.add("2.4.1");
+		filterString.add("5.0");	
 		//return filterString;
 		return null;
 	}
